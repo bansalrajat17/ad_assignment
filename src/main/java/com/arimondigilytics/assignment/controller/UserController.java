@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -34,7 +35,7 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public String register(MultipartHttpServletRequest request) throws IOException {
+	public String register(MultipartHttpServletRequest request, Model model) throws IOException {
 		File file = (File) request.getFile("file");
 		String line = "";
 		List<String> userList = new ArrayList<String>();
@@ -50,7 +51,7 @@ public class UserController {
 			user.setRoleSet(roleSet);
 			userSet.add(user);
 		}
-		
-		return "";
+		model.addAttribute("SaveResult", userService.save_user_set(userSet));
+		return "/register";
 	}
 }
